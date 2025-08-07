@@ -28,7 +28,7 @@
       <h2>💾 資料管理</h2>
       <div class="data-actions">
         <button id="importBtn" class="btn btn-secondary">
-          📥 匯入收藏
+          📥 匯入收藏 (JSON)
         </button>
         <button id="exportBtn" class="btn btn-primary">
           📤 匯出收藏
@@ -37,8 +37,11 @@
           🗑️ 清除所有收藏
         </button>
       </div>
+      <div class="setting-description" style="margin-top: 10px; margin-bottom: 10px;">
+        ※ 匯入僅支援 JSON 格式，Markdown 格式僅供閱讀使用
+      </div>
       
-      <input type="file" id="importFile" accept=".json" style="display: none;">
+      <input type="file" id="importFile" accept=".json,application/json" style="display: none;">
       
       <div class="stats-container">
         <div class="stat-item">
