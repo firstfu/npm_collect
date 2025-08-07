@@ -126,41 +126,69 @@ async function injectFavoriteButton() {
 }
 
 function findTargetElement() {
-  // 方法1: 尋找 Install 標題
-  const headings = document.querySelectorAll('h2, h3');
-  for (const heading of headings) {
-    if (heading.textContent.trim().toLowerCase() === 'install') {
-      // 返回 Install 標題元素，按鈕會加在它後面
-      return { element: heading, position: 'after' };
+  // 尋找右側欄位的 Install 區塊
+  // NPM 網站的右側欄通常有特定的 class 或結構
+  
+  // 方法1: 尋找包含 npm i 指令的輸入框（右側）
+  const inputs = document.querySelectorAll('input[type="text"], input[readonly]');
+  for (const input of inputs) {
+    const value = input.value || input.textContent || '';
+    if (value.includes('npm i ') || value.includes('npm install ')) {
+      // 找到輸入框的父容器
+      let container = input.parentElement;
+      // 往上找到合適的容器層級
+      while (container && !container.querySelector('h2, h3, [class*="install"]')) {
+        container = container.parentElement;
+      }
+      if (container) {
+        // 在輸入框的容器內插入
+        return { element: input.parentElement, position: 'after' };
+      }
     }
   }
   
-  // 方法2: 尋找包含 npm install 的 code 區塊
-  const codeElements = document.querySelectorAll('code');
-  for (const codeElement of codeElements) {
-    const text = codeElement.textContent.trim();
-    if (text.startsWith('npm i ') || text.startsWith('npm install ')) {
-      // 找到包含 code 的容器（通常是 pre 或 div）
-      let parent = codeElement.parentElement;
-      while (parent && parent.tagName !== 'PRE' && parent.tagName !== 'DIV') {
-        parent = parent.parentElement;
+  // 方法2: 尋找右側欄的區塊（通常包含 Repository、Homepage 等）
+  const sidebarSections = document.querySelectorAll('aside, [role="complementary"], [class*="sidebar"], [class*="side"], [class*="right"]');
+  for (const section of sidebarSections) {
+    // 在右側欄中尋找 Install 相關的標題
+    const installHeading = Array.from(section.querySelectorAll('h2, h3, h4, p')).find(
+      el => el.textContent.trim().toLowerCase() === 'install'
+    );
+    if (installHeading) {
+      // 找到 npm 指令的元素
+      const codeElement = section.querySelector('code, pre, input');
+      if (codeElement && (codeElement.textContent || codeElement.value || '').includes('npm')) {
+        // 在指令元素後插入
+        return { element: codeElement.parentElement || codeElement, position: 'after' };
       }
-      if (parent) {
-        // 找到 Install 區塊的容器
-        let installSection = parent;
-        // 往上找到包含 Install 標題的區塊
-        while (installSection && !installSection.querySelector('h2, h3')) {
-          installSection = installSection.previousElementSibling;
-        }
-        if (installSection) {
-          const heading = installSection.querySelector('h2, h3');
-          if (heading && heading.textContent.toLowerCase().includes('install')) {
-            return { element: heading, position: 'after' };
-          }
-        }
-        // 如果找不到標題，就在命令上方插入
-        return { element: parent, position: 'before' };
+      // 否則在標題後插入
+      return { element: installHeading, position: 'after' };
+    }
+  }
+  
+  // 方法3: 使用更廣泛的選擇器尋找右側的 Install 區塊
+  const allElements = document.querySelectorAll('*');
+  for (const element of allElements) {
+    // 檢查元素是否包含 Install 文字且位於頁面右側
+    if (element.textContent === 'Install' && element.getBoundingClientRect().left > window.innerWidth / 2) {
+      // 找到下方的 npm 指令元素
+      const nextElements = [];
+      let sibling = element.nextElementSibling;
+      for (let i = 0; i < 5 && sibling; i++) {
+        nextElements.push(sibling);
+        sibling = sibling.nextElementSibling;
       }
+      
+      for (const next of nextElements) {
+        const codeOrInput = next.querySelector('code, input, pre') || next;
+        const content = codeOrInput.textContent || codeOrInput.value || '';
+        if (content.includes('npm i ') || content.includes('npm install ')) {
+          return { element: codeOrInput.parentElement || codeOrInput, position: 'after' };
+        }
+      }
+      
+      // 如果找不到 npm 指令，就在 Install 標題後插入
+      return { element: element, position: 'after' };
     }
   }
   
