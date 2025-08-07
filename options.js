@@ -1,7 +1,4 @@
 let settings = {
-  theme: 'light',
-  autoTag: true,
-  notifications: true,
   exportFormat: 'json'
 };
 
@@ -17,13 +14,7 @@ async function loadSettings() {
     settings = result.settings;
     
     // 應用設定到UI
-    document.getElementById('theme').value = settings.theme || 'light';
-    document.getElementById('autoTag').checked = settings.autoTag !== false;
-    document.getElementById('notifications').checked = settings.notifications !== false;
     document.getElementById('exportFormat').value = settings.exportFormat || 'json';
-    
-    // 應用主題
-    applyTheme(settings.theme);
   }
 }
 
@@ -43,10 +34,6 @@ function setupEventListeners() {
   // 儲存按鈕
   document.getElementById('saveBtn').addEventListener('click', saveSettings);
   
-  // 主題切換
-  document.getElementById('theme').addEventListener('change', (e) => {
-    applyTheme(e.target.value);
-  });
   
   // 匯入按鈕
   document.getElementById('importBtn').addEventListener('click', () => {
@@ -65,9 +52,6 @@ function setupEventListeners() {
 
 async function saveSettings() {
   settings = {
-    theme: document.getElementById('theme').value,
-    autoTag: document.getElementById('autoTag').checked,
-    notifications: document.getElementById('notifications').checked,
     exportFormat: document.getElementById('exportFormat').value
   };
   
@@ -81,21 +65,6 @@ async function saveSettings() {
   setTimeout(() => {
     status.classList.remove('show');
   }, 3000);
-}
-
-function applyTheme(theme) {
-  if (theme === 'dark') {
-    document.body.classList.add('dark-theme');
-  } else if (theme === 'light') {
-    document.body.classList.remove('dark-theme');
-  } else if (theme === 'auto') {
-    // 檢測系統主題
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.body.classList.add('dark-theme');
-    } else {
-      document.body.classList.remove('dark-theme');
-    }
-  }
 }
 
 async function handleImport(event) {
@@ -214,14 +183,4 @@ async function handleClear() {
       loadStats();
     }
   }
-}
-
-// 監聽系統主題變化
-if (window.matchMedia) {
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    const currentTheme = document.getElementById('theme').value;
-    if (currentTheme === 'auto') {
-      applyTheme('auto');
-    }
-  });
 }
