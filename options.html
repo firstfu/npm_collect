@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NPM 套件收藏 - 設定</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>⚙️ 擴充功能設定</h1>
+    </header>
+
+    <div class="settings-section">
+      <h2>🎨 外觀設定</h2>
+      <div class="setting-item">
+        <label for="theme">主題</label>
+        <select id="theme">
+          <option value="light">淺色主題</option>
+          <option value="dark">深色主題</option>
+          <option value="auto">跟隨系統</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h2>🔧 功能設定</h2>
+      <div class="setting-item">
+        <label>
+          <input type="checkbox" id="autoTag">
+          自動標籤分類
+        </label>
+        <div class="setting-description">
+          根據套件名稱和描述自動添加分類標籤
+        </div>
+      </div>
+      
+      <div class="setting-item">
+        <label>
+          <input type="checkbox" id="notifications">
+          顯示通知
+        </label>
+        <div class="setting-description">
+          收藏或取消收藏時顯示桌面通知
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h2>📤 匯出設定</h2>
+      <div class="setting-item">
+        <label for="exportFormat">預設匯出格式</label>
+        <select id="exportFormat">
+          <option value="json">JSON</option>
+          <option value="markdown">Markdown</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h2>💾 資料管理</h2>
+      <div class="data-actions">
+        <button id="importBtn" class="btn btn-secondary">
+          📥 匯入收藏
+        </button>
+        <button id="exportBtn" class="btn btn-primary">
+          📤 匯出收藏
+        </button>
+        <button id="clearBtn" class="btn btn-danger">
+          🗑️ 清除所有收藏
+        </button>
+      </div>
+      
+      <input type="file" id="importFile" accept=".json" style="display: none;">
+      
+      <div class="stats-container">
+        <div class="stat-item">
+          <span class="stat-label">總收藏數：</span>
+          <span id="totalPackages" class="stat-value">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">使用空間：</span>
+          <span id="storageUsed" class="stat-value">0 KB</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h2>ℹ️ 關於</h2>
+      <div class="about-content">
+        <p>NPM 套件收藏管理器 v1.0.0</p>
+        <p>輕鬆收藏和管理您在 npmjs.com 上發現的優質套件</p>
+        <div class="shortcuts">
+          <h3>快捷操作：</h3>
+          <ul>
+            <li>在 NPM 套件頁面點擊收藏按鈕即可收藏</li>
+            <li>點擊擴充功能圖示查看所有收藏</li>
+            <li>支援搜尋、標籤篩選和筆記功能</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="save-container">
+      <button id="saveBtn" class="btn btn-success">
+        💾 儲存設定
+      </button>
+      <span id="saveStatus" class="save-status"></span>
+    </div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

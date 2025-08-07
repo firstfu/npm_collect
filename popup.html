@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NPM 套件收藏</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📦 NPM 套件收藏</h1>
+      <button id="optionsBtn" class="icon-btn" title="設定">⚙️</button>
+    </header>
+
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="搜尋收藏的套件...">
+    </div>
+
+    <div class="filter-container">
+      <select id="tagFilter">
+        <option value="">所有標籤</option>
+      </select>
+      <select id="sortOrder">
+        <option value="newest">最新收藏</option>
+        <option value="oldest">最早收藏</option>
+        <option value="name">按名稱</option>
+      </select>
+    </div>
+
+    <div id="packageList" class="package-list">
+      <div class="loading">載入中...</div>
+    </div>
+
+    <div class="stats">
+      <span id="totalCount">共 0 個收藏</span>
+      <button id="exportBtn" class="text-btn">匯出</button>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

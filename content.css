@@ -1,0 +1,22 @@
+.npm-favorite-container {
+  display: inline-flex;
+  align-items: center;
+}
+
+.npm-favorite-btn {
+  transition: all 0.3s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+}
+
+.npm-favorite-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.npm-favorite-btn:active {
+  transform: translateY(0);
+}
+
+.npm-favorite-notification {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+}
