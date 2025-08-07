@@ -107,12 +107,11 @@ function renderPackages() {
   packageList.innerHTML = filteredPackages.map(pkg => `
     <div class="package-item" data-name="${pkg.name}">
       <div class="package-header">
-        <a href="https://www.npmjs.com/package/${pkg.name}" 
-           class="package-name" 
-           target="_blank"
-           title="在 NPM 上查看">
+        <span class="package-name" 
+              data-url="https://www.npmjs.com/package/${pkg.name}"
+              title="在 NPM 上查看">
           ${pkg.name}
-        </a>
+        </span>
         <span class="package-version">${pkg.version || 'latest'}</span>
       </div>
       ${pkg.description ? `<div class="package-description">${pkg.description}</div>` : ''}
@@ -147,10 +146,14 @@ function renderPackages() {
     });
   });
   
-  // 防止連結點擊冒泡
-  packageList.querySelectorAll('.package-name').forEach(link => {
-    link.addEventListener('click', (e) => {
+  // 處理套件名稱點擊
+  packageList.querySelectorAll('.package-name').forEach(element => {
+    element.addEventListener('click', (e) => {
       e.stopPropagation();
+      const url = element.dataset.url;
+      if (url) {
+        chrome.tabs.create({ url: url });
+      }
     });
   });
 }
