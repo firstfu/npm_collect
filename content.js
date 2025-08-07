@@ -17,8 +17,8 @@ async function injectFavoriteButton() {
   if (!packageName) return;
   
   // 尋找合適的注入位置
-  const targetElement = findTargetElement();
-  if (!targetElement) {
+  const target = findTargetElement();
+  if (!target) {
     console.log('找不到合適的位置注入收藏按鈕');
     return;
   }
@@ -30,9 +30,9 @@ async function injectFavoriteButton() {
   const buttonContainer = document.createElement('div');
   buttonContainer.className = 'npm-favorite-container';
   buttonContainer.style.cssText = `
-    display: inline-flex;
+    margin: 12px 0;
+    display: flex;
     align-items: center;
-    margin-left: 12px;
   `;
   
   // 創建收藏按鈕
@@ -46,20 +46,23 @@ async function injectFavoriteButton() {
     ? '點擊取消收藏' 
     : '點擊收藏此套件';
   
-  // 添加樣式
+  // 添加樣式（與 npm 網站風格一致）
   favoriteBtn.style.cssText = `
     background: ${isFavorited ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#ffffff'};
     color: ${isFavorited ? '#ffffff' : '#667eea'};
-    border: ${isFavorited ? 'none' : '2px solid #667eea'};
+    border: ${isFavorited ? '1px solid #667eea' : '1px solid #667eea'};
     padding: 6px 16px;
     border-radius: 6px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
+    height: auto;
+    line-height: 1.5;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   `;
   
   // 懸停效果
@@ -79,7 +82,7 @@ async function injectFavoriteButton() {
     } else {
       favoriteBtn.style.background = '#ffffff';
       favoriteBtn.style.color = '#667eea';
-      favoriteBtn.style.border = '2px solid #667eea';
+      favoriteBtn.style.border = '1px solid #667eea';
     }
   });
   
@@ -95,7 +98,7 @@ async function injectFavoriteButton() {
       favoriteBtn.title = '點擊收藏此套件';
       favoriteBtn.style.background = '#ffffff';
       favoriteBtn.style.color = '#667eea';
-      favoriteBtn.style.border = '2px solid #667eea';
+      favoriteBtn.style.border = '1px solid #667eea';
       showNotification('已取消收藏', packageName);
     } else {
       // 添加收藏
@@ -111,32 +114,54 @@ async function injectFavoriteButton() {
   });
   
   buttonContainer.appendChild(favoriteBtn);
-  targetElement.appendChild(buttonContainer);
+  
+  // 根據位置插入按鈕
+  if (target.position === 'after') {
+    target.element.insertAdjacentElement('afterend', buttonContainer);
+  } else if (target.position === 'before') {
+    target.element.insertAdjacentElement('beforebegin', buttonContainer);
+  } else {
+    target.element.appendChild(buttonContainer);
+  }
 }
 
 function findTargetElement() {
-  // 嘗試多個可能的位置
-  const selectors = [
-    'h1', // 套件名稱標題
-    '[class*="title"]',
-    'header h2',
-    '#top > div > h1'
-  ];
-  
-  for (const selector of selectors) {
-    const element = document.querySelector(selector);
-    if (element && element.textContent.includes(getPackageName())) {
-      return element;
+  // 方法1: 尋找 Install 標題
+  const headings = document.querySelectorAll('h2, h3');
+  for (const heading of headings) {
+    if (heading.textContent.trim().toLowerCase() === 'install') {
+      // 返回 Install 標題元素，按鈕會加在它後面
+      return { element: heading, position: 'after' };
     }
   }
   
-  // 如果找不到標題，尋找安裝命令附近
-  const installElement = Array.from(document.querySelectorAll('code')).find(
-    el => el.textContent.includes('npm install') || el.textContent.includes('npm i')
-  );
-  
-  if (installElement) {
-    return installElement.parentElement;
+  // 方法2: 尋找包含 npm install 的 code 區塊
+  const codeElements = document.querySelectorAll('code');
+  for (const codeElement of codeElements) {
+    const text = codeElement.textContent.trim();
+    if (text.startsWith('npm i ') || text.startsWith('npm install ')) {
+      // 找到包含 code 的容器（通常是 pre 或 div）
+      let parent = codeElement.parentElement;
+      while (parent && parent.tagName !== 'PRE' && parent.tagName !== 'DIV') {
+        parent = parent.parentElement;
+      }
+      if (parent) {
+        // 找到 Install 區塊的容器
+        let installSection = parent;
+        // 往上找到包含 Install 標題的區塊
+        while (installSection && !installSection.querySelector('h2, h3')) {
+          installSection = installSection.previousElementSibling;
+        }
+        if (installSection) {
+          const heading = installSection.querySelector('h2, h3');
+          if (heading && heading.textContent.toLowerCase().includes('install')) {
+            return { element: heading, position: 'after' };
+          }
+        }
+        // 如果找不到標題，就在命令上方插入
+        return { element: parent, position: 'before' };
+      }
+    }
   }
   
   return null;
