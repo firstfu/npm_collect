@@ -27,11 +27,11 @@ async function injectFavoriteButton() {
   const isFavorited = await checkIfFavorited(packageName);
   
   // 創建收藏按鈕容器
-  const buttonContainer = document.createElement('div');
+  const buttonContainer = document.createElement('span');
   buttonContainer.className = 'npm-favorite-container';
   buttonContainer.style.cssText = `
-    margin: 12px 0;
-    display: flex;
+    margin-left: auto;
+    display: inline-flex;
     align-items: center;
   `;
   
@@ -116,7 +116,9 @@ async function injectFavoriteButton() {
   buttonContainer.appendChild(favoriteBtn);
   
   // 根據位置插入按鈕
-  if (target.position === 'after') {
+  if (target.position === 'append') {
+    target.element.appendChild(buttonContainer);
+  } else if (target.position === 'after') {
     target.element.insertAdjacentElement('afterend', buttonContainer);
   } else if (target.position === 'before') {
     target.element.insertAdjacentElement('beforebegin', buttonContainer);
@@ -126,69 +128,72 @@ async function injectFavoriteButton() {
 }
 
 function findTargetElement() {
-  // 尋找右側欄位的 Install 區塊
-  // NPM 網站的右側欄通常有特定的 class 或結構
+  // 尋找右側欄位的 Install 標題，並在其右側插入按鈕
   
-  // 方法1: 尋找包含 npm i 指令的輸入框（右側）
-  const inputs = document.querySelectorAll('input[type="text"], input[readonly]');
-  for (const input of inputs) {
-    const value = input.value || input.textContent || '';
-    if (value.includes('npm i ') || value.includes('npm install ')) {
-      // 找到輸入框的父容器
-      let container = input.parentElement;
-      // 往上找到合適的容器層級
-      while (container && !container.querySelector('h2, h3, [class*="install"]')) {
-        container = container.parentElement;
-      }
-      if (container) {
-        // 在輸入框的容器內插入
-        return { element: input.parentElement, position: 'after' };
-      }
-    }
-  }
-  
-  // 方法2: 尋找右側欄的區塊（通常包含 Repository、Homepage 等）
-  const sidebarSections = document.querySelectorAll('aside, [role="complementary"], [class*="sidebar"], [class*="side"], [class*="right"]');
-  for (const section of sidebarSections) {
-    // 在右側欄中尋找 Install 相關的標題
-    const installHeading = Array.from(section.querySelectorAll('h2, h3, h4, p')).find(
-      el => el.textContent.trim().toLowerCase() === 'install'
-    );
-    if (installHeading) {
-      // 找到 npm 指令的元素
-      const codeElement = section.querySelector('code, pre, input');
-      if (codeElement && (codeElement.textContent || codeElement.value || '').includes('npm')) {
-        // 在指令元素後插入
-        return { element: codeElement.parentElement || codeElement, position: 'after' };
-      }
-      // 否則在標題後插入
-      return { element: installHeading, position: 'after' };
-    }
-  }
-  
-  // 方法3: 使用更廣泛的選擇器尋找右側的 Install 區塊
-  const allElements = document.querySelectorAll('*');
+  // 方法1: 直接尋找 Install 標題元素
+  const allElements = document.querySelectorAll('h1, h2, h3, h4, h5, p, div');
   for (const element of allElements) {
-    // 檢查元素是否包含 Install 文字且位於頁面右側
-    if (element.textContent === 'Install' && element.getBoundingClientRect().left > window.innerWidth / 2) {
-      // 找到下方的 npm 指令元素
-      const nextElements = [];
-      let sibling = element.nextElementSibling;
-      for (let i = 0; i < 5 && sibling; i++) {
-        nextElements.push(sibling);
-        sibling = sibling.nextElementSibling;
+    // 檢查是否為 Install 標題且在右側
+    if (element.textContent.trim() === 'Install' && 
+        element.getBoundingClientRect().left > window.innerWidth / 2) {
+      
+      // 檢查標題是否已經是 flex 容器
+      const currentDisplay = window.getComputedStyle(element).display;
+      if (!currentDisplay.includes('flex')) {
+        // 將標題改為 flex 容器，以便在右側添加按鈕
+        element.style.display = 'flex';
+        element.style.alignItems = 'center';
+        element.style.justifyContent = 'space-between';
       }
       
-      for (const next of nextElements) {
-        const codeOrInput = next.querySelector('code, input, pre') || next;
-        const content = codeOrInput.textContent || codeOrInput.value || '';
-        if (content.includes('npm i ') || content.includes('npm install ')) {
-          return { element: codeOrInput.parentElement || codeOrInput, position: 'after' };
+      return { element: element, position: 'append' };
+    }
+  }
+  
+  // 方法2: 尋找包含 npm i 指令的區塊的標題
+  const codeElements = document.querySelectorAll('code, input, pre');
+  for (const codeElement of codeElements) {
+    const content = codeElement.textContent || codeElement.value || '';
+    if ((content.includes('npm i ') || content.includes('npm install ')) &&
+        codeElement.getBoundingClientRect().left > window.innerWidth / 2) {
+      
+      // 往上找到 Install 標題
+      let parent = codeElement.parentElement;
+      let installHeading = null;
+      
+      while (parent && !installHeading) {
+        // 在當前元素及其兄弟元素中尋找 Install 標題
+        const siblings = Array.from(parent.children);
+        installHeading = siblings.find(el => 
+          el.textContent.trim() === 'Install' || 
+          el.textContent.trim().toLowerCase() === 'install'
+        );
+        
+        if (!installHeading && parent.previousElementSibling) {
+          // 檢查前面的兄弟元素
+          const prevSibling = parent.previousElementSibling;
+          if (prevSibling.textContent.trim() === 'Install' || 
+              prevSibling.textContent.trim().toLowerCase() === 'install') {
+            installHeading = prevSibling;
+          }
+        }
+        
+        if (!installHeading) {
+          parent = parent.parentElement;
         }
       }
       
-      // 如果找不到 npm 指令，就在 Install 標題後插入
-      return { element: element, position: 'after' };
+      if (installHeading) {
+        // 設置為 flex 容器
+        const currentDisplay = window.getComputedStyle(installHeading).display;
+        if (!currentDisplay.includes('flex')) {
+          installHeading.style.display = 'flex';
+          installHeading.style.alignItems = 'center';
+          installHeading.style.justifyContent = 'space-between';
+        }
+        
+        return { element: installHeading, position: 'append' };
+      }
     }
   }
   
