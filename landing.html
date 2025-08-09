@@ -445,17 +445,12 @@
         background: white;
       }
 
-      .use-cases-slider {
+      .use-cases-grid {
         max-width: 1200px;
         margin: 60px auto 0;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .use-cases-grid {
-        display: flex;
-        transition: transform 0.5s ease-in-out;
-        gap: 30px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
       }
 
       .use-case {
@@ -464,8 +459,6 @@
         border-radius: var(--border-radius);
         background: var(--light-bg);
         transition: var(--transition);
-        min-width: calc(25% - 22.5px);
-        flex: 0 0 calc(25% - 22.5px);
       }
 
       .use-case:hover {
@@ -919,11 +912,6 @@
           flex: 0 0 calc(50% - 15px);
         }
         
-        .use-case {
-          min-width: calc(50% - 15px);
-          flex: 0 0 calc(50% - 15px);
-        }
-        
         .feature-card {
           min-width: calc(50% - 15px);
           flex: 0 0 calc(50% - 15px);
@@ -931,11 +919,6 @@
       }
       
       @media (max-width: 768px) {
-        .use-case {
-          min-width: 100%;
-          flex: 0 0 100%;
-        }
-        
         .feature-card {
           min-width: 100%;
           flex: 0 0 100%;
