@@ -775,6 +775,7 @@
 
         .stats-container {
           grid-template-columns: repeat(2, 1fr);
+          gap: 20px;
         }
 
         .features-grid {
@@ -793,6 +794,44 @@
         .cta-buttons {
           flex-direction: column;
           align-items: center;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .stats-container {
+          grid-template-columns: 1fr;
+          gap: 15px;
+        }
+
+        .stat-card {
+          padding: 20px;
+        }
+
+        .stat-number {
+          font-size: 36px;
+        }
+
+        .stat-label {
+          font-size: 16px;
+        }
+
+        .hero-content h1 {
+          font-size: 28px;
+        }
+
+        .hero-content p {
+          font-size: 18px;
+        }
+
+        .hero-buttons {
+          flex-direction: column;
+          gap: 15px;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+          padding: 12px 30px;
+          font-size: 16px;
         }
       }
 
