@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(open /Users/firstfu/Desktop/npm_collect/landing.html)",
+      "Bash(open /Users/firstfu/Desktop/npm_collect/generate_icon.html)"
     ],
     "deny": []
   }
