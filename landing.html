@@ -369,11 +369,16 @@
         color: var(--light-text);
       }
 
-      .features-grid {
+      .features-slider {
         max-width: 1200px;
         margin: 0 auto;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        position: relative;
+        overflow: hidden;
+      }
+
+      .features-grid {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
         gap: 30px;
       }
 
@@ -385,6 +390,8 @@
         transition: var(--transition);
         position: relative;
         overflow: hidden;
+        min-width: calc(33.333% - 20px);
+        flex: 0 0 calc(33.333% - 20px);
       }
 
       .feature-card::before {
@@ -438,12 +445,17 @@
         background: white;
       }
 
-      .use-cases-grid {
+      .use-cases-slider {
         max-width: 1200px;
         margin: 60px auto 0;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 40px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .use-cases-grid {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+        gap: 30px;
       }
 
       .use-case {
@@ -452,6 +464,8 @@
         border-radius: var(--border-radius);
         background: var(--light-bg);
         transition: var(--transition);
+        min-width: calc(25% - 22.5px);
+        flex: 0 0 calc(25% - 22.5px);
       }
 
       .use-case:hover {
@@ -813,11 +827,13 @@
           gap: 20px;
         }
 
-        .features-grid {
-          grid-template-columns: 1fr;
-        }
 
         .testimonial-card {
+          min-width: 100%;
+          flex: 0 0 100%;
+        }
+        
+        .feature-card {
           min-width: 100%;
           flex: 0 0 100%;
         }
@@ -901,6 +917,28 @@
         .testimonial-card {
           min-width: calc(50% - 15px);
           flex: 0 0 calc(50% - 15px);
+        }
+        
+        .use-case {
+          min-width: calc(50% - 15px);
+          flex: 0 0 calc(50% - 15px);
+        }
+        
+        .feature-card {
+          min-width: calc(50% - 15px);
+          flex: 0 0 calc(50% - 15px);
+        }
+      }
+      
+      @media (max-width: 768px) {
+        .use-case {
+          min-width: 100%;
+          flex: 0 0 100%;
+        }
+        
+        .feature-card {
+          min-width: 100%;
+          flex: 0 0 100%;
         }
       }
     </style>
@@ -996,31 +1034,44 @@
         <h2>強大功能，提升效率</h2>
         <p>每一個功能都經過精心設計，為開發者提供最佳的使用體驗</p>
       </div>
-      <div class="features-grid">
-        <div class="feature-card fade-in">
-          <div class="feature-icon">📌</div>
-          <h3>一鍵收藏</h3>
-          <p>在瀏覽 npm 套件頁面時，只需點擊收藏按鈕即可快速保存。無需複雜操作，收藏您喜愛的套件就是這麼簡單。</p>
+      <div class="features-slider">
+        <div class="features-grid" id="featuresContainer">
+          <div class="feature-card fade-in">
+            <div class="feature-icon">📌</div>
+            <h3>一鍵收藏</h3>
+            <p>在瀏覽 npm 套件頁面時，只需點擊收藏按鈕即可快速保存。無需複雜操作，收藏您喜愛的套件就是這麼簡單。</p>
+          </div>
+          <div class="feature-card fade-in">
+            <div class="feature-icon">🔍</div>
+            <h3>快速搜尋</h3>
+            <p>強大的搜尋功能，支援關鍵字搜尋。即使收藏了上百個套件，也能瞬間找到您需要的那一個。</p>
+          </div>
+          <div class="feature-card fade-in">
+            <div class="feature-icon">📝</div>
+            <h3>個人筆記</h3>
+            <p>為每個套件添加使用心得、版本備註或實作範例。您的收藏不只是連結，更是知識庫。</p>
+          </div>
+          <div class="feature-card fade-in">
+            <div class="feature-icon">📤</div>
+            <h3>匯出分享</h3>
+            <p>支援 JSON 和 Markdown 格式匯出，輕鬆備份或與團隊分享。建立團隊共享的套件庫從未如此簡單。</p>
+          </div>
+          <div class="feature-card fade-in">
+            <div class="feature-icon">🔒</div>
+            <h3>本地儲存</h3>
+            <p>所有資料都安全地儲存在您的本地瀏覽器中，完全掌控您的資料。支援匯出備份，永不遺失重要收藏。</p>
+          </div>
+          <div class="feature-card fade-in">
+            <div class="feature-icon">🏷️</div>
+            <h3>智慧標籤</h3>
+            <p>自動識別套件類型並添加相關標籤，支援自訂分類。讓您的收藏井然有序，快速定位所需套件。</p>
+          </div>
         </div>
-        <div class="feature-card fade-in">
-          <div class="feature-icon">🔍</div>
-          <h3>快速搜尋</h3>
-          <p>強大的搜尋功能，支援關鍵字搜尋。即使收藏了上百個套件，也能瞬間找到您需要的那一個。</p>
-        </div>
-        <div class="feature-card fade-in">
-          <div class="feature-icon">📝</div>
-          <h3>個人筆記</h3>
-          <p>為每個套件添加使用心得、版本備註或實作範例。您的收藏不只是連結，更是知識庫。</p>
-        </div>
-        <div class="feature-card fade-in">
-          <div class="feature-icon">📤</div>
-          <h3>匯出分享</h3>
-          <p>支援 JSON 和 Markdown 格式匯出，輕鬆備份或與團隊分享。建立團隊共享的套件庫從未如此簡單。</p>
-        </div>
-        <div class="feature-card fade-in">
-          <div class="feature-icon">🔒</div>
-          <h3>本地儲存</h3>
-          <p>所有資料都安全地儲存在您的本地瀏覽器中，完全掌控您的資料。支援匯出備份，永不遺失重要收藏。</p>
+        
+        <div class="testimonials-nav">
+          <button class="nav-btn" id="featuresPrevBtn" onclick="slideFeatures(-1)">‹</button>
+          <div class="testimonials-dots" id="featuresDots"></div>
+          <button class="nav-btn" id="featuresNextBtn" onclick="slideFeatures(1)">›</button>
         </div>
       </div>
     </section>
@@ -1031,26 +1082,44 @@
         <h2>適合每一位開發者</h2>
         <p>無論您是前端、後端還是全端開發者，都能從中受益</p>
       </div>
-      <div class="use-cases-grid">
-        <div class="use-case fade-in">
-          <div class="use-case-icon">👨‍💻</div>
-          <h4>前端開發者</h4>
-          <p>收藏 UI 元件庫、框架、構建工具，快速建立專案</p>
+      <div class="use-cases-slider">
+        <div class="use-cases-grid" id="useCasesContainer">
+          <div class="use-case fade-in">
+            <div class="use-case-icon">👨‍💻</div>
+            <h4>前端開發者</h4>
+            <p>收藏 UI 元件庫、框架、構建工具，快速建立專案</p>
+          </div>
+          <div class="use-case fade-in">
+            <div class="use-case-icon">⚙️</div>
+            <h4>後端工程師</h4>
+            <p>管理資料庫驅動、API 框架、工具函式庫</p>
+          </div>
+          <div class="use-case fade-in">
+            <div class="use-case-icon">🎯</div>
+            <h4>技術主管</h4>
+            <p>評估技術選型，建立團隊技術棧標準</p>
+          </div>
+          <div class="use-case fade-in">
+            <div class="use-case-icon">📚</div>
+            <h4>學習者</h4>
+            <p>收藏學習資源，按學習進度分類管理</p>
+          </div>
+          <div class="use-case fade-in">
+            <div class="use-case-icon">🎨</div>
+            <h4>UI/UX 設計師</h4>
+            <p>收藏設計系統、動畫庫、原型工具</p>
+          </div>
+          <div class="use-case fade-in">
+            <div class="use-case-icon">📊</div>
+            <h4>數據分析師</h4>
+            <p>管理圖表庫、數據處理、機器學習套件</p>
+          </div>
         </div>
-        <div class="use-case fade-in">
-          <div class="use-case-icon">⚙️</div>
-          <h4>後端工程師</h4>
-          <p>管理資料庫驅動、API 框架、工具函式庫</p>
-        </div>
-        <div class="use-case fade-in">
-          <div class="use-case-icon">🎯</div>
-          <h4>技術主管</h4>
-          <p>評估技術選型，建立團隊技術棧標準</p>
-        </div>
-        <div class="use-case fade-in">
-          <div class="use-case-icon">📚</div>
-          <h4>學習者</h4>
-          <p>收藏學習資源，按學習進度分類管理</p>
+        
+        <div class="testimonials-nav">
+          <button class="nav-btn" id="useCasesPrevBtn" onclick="slideUseCases(-1)">‹</button>
+          <div class="testimonials-dots" id="useCasesDots"></div>
+          <button class="nav-btn" id="useCasesNextBtn" onclick="slideUseCases(1)">›</button>
         </div>
       </div>
     </section>
@@ -1474,9 +1543,293 @@
         }
       });
 
+      // 使用場景滑動器
+      let currentUseCaseSlide = 0;
+      const useCaseCards = document.querySelectorAll('.use-case');
+      const totalUseCaseCards = useCaseCards.length;
+      let useCaseCardsPerView = 4;
+
+      // 根據螢幕尺寸調整顯示卡片數量
+      function updateUseCaseCardsPerView() {
+        if (window.innerWidth <= 768) {
+          useCaseCardsPerView = 1;
+        } else if (window.innerWidth <= 1024) {
+          useCaseCardsPerView = 2;
+        } else {
+          useCaseCardsPerView = 4;
+        }
+      }
+
+      // 計算最大滑動頁數
+      function getMaxUseCaseSlides() {
+        return Math.ceil(totalUseCaseCards / useCaseCardsPerView) - 1;
+      }
+
+      // 滑動功能
+      function slideUseCases(direction) {
+        const maxSlides = getMaxUseCaseSlides();
+        
+        if (direction === 1 && currentUseCaseSlide < maxSlides) {
+          currentUseCaseSlide++;
+        } else if (direction === -1 && currentUseCaseSlide > 0) {
+          currentUseCaseSlide--;
+        }
+        
+        updateUseCaseSlider();
+      }
+
+      // 更新滑動器位置
+      function updateUseCaseSlider() {
+        const container = document.getElementById('useCasesContainer');
+        const cardWidth = container.querySelector('.use-case').offsetWidth;
+        const gap = 30;
+        const translateX = -(currentUseCaseSlide * useCaseCardsPerView * (cardWidth + gap));
+        
+        container.style.transform = `translateX(${translateX}px)`;
+        
+        // 更新導航按鈕狀態
+        const prevBtn = document.getElementById('useCasesPrevBtn');
+        const nextBtn = document.getElementById('useCasesNextBtn');
+        const maxSlides = getMaxUseCaseSlides();
+        
+        prevBtn.disabled = currentUseCaseSlide === 0;
+        nextBtn.disabled = currentUseCaseSlide >= maxSlides;
+        
+        // 更新指示點
+        updateUseCaseDots();
+      }
+
+      // 創建指示點
+      function createUseCaseDots() {
+        const dotsContainer = document.getElementById('useCasesDots');
+        const maxSlides = getMaxUseCaseSlides() + 1;
+        
+        dotsContainer.innerHTML = '';
+        
+        for (let i = 0; i < maxSlides; i++) {
+          const dot = document.createElement('div');
+          dot.className = 'dot';
+          if (i === currentUseCaseSlide) dot.classList.add('active');
+          dot.addEventListener('click', () => {
+            currentUseCaseSlide = i;
+            updateUseCaseSlider();
+          });
+          dotsContainer.appendChild(dot);
+        }
+      }
+
+      // 更新指示點
+      function updateUseCaseDots() {
+        const dots = document.querySelectorAll('#useCasesDots .dot');
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === currentUseCaseSlide);
+        });
+      }
+
+      // 自動播放使用場景
+      let useCaseAutoSlideInterval;
+      
+      function startUseCaseAutoSlide() {
+        useCaseAutoSlideInterval = setInterval(() => {
+          const maxSlides = getMaxUseCaseSlides();
+          if (currentUseCaseSlide >= maxSlides) {
+            currentUseCaseSlide = 0;
+          } else {
+            currentUseCaseSlide++;
+          }
+          updateUseCaseSlider();
+        }, 4000);
+      }
+
+      function stopUseCaseAutoSlide() {
+        clearInterval(useCaseAutoSlideInterval);
+      }
+
+      // 初始化使用場景滑動器
+      function initUseCasesSlider() {
+        updateUseCaseCardsPerView();
+        createUseCaseDots();
+        updateUseCaseSlider();
+        startUseCaseAutoSlide();
+        
+        // 滑鼠懸停時暫停自動播放
+        const slider = document.querySelector('.use-cases-slider');
+        slider.addEventListener('mouseenter', stopUseCaseAutoSlide);
+        slider.addEventListener('mouseleave', startUseCaseAutoSlide);
+      }
+
+      // 響應式更新使用場景
+      const originalResize = window.onresize;
+      window.addEventListener('resize', () => {
+        const oldUseCaseCardsPerView = useCaseCardsPerView;
+        updateUseCaseCardsPerView();
+        
+        if (oldUseCaseCardsPerView !== useCaseCardsPerView) {
+          currentUseCaseSlide = 0;
+          createUseCaseDots();
+          updateUseCaseSlider();
+        }
+        
+        const oldCardsPerView = cardsPerView;
+        updateCardsPerView();
+        
+        if (oldCardsPerView !== cardsPerView) {
+          currentSlide = 0;
+          createDots();
+          updateSlider();
+        }
+      });
+
+      // 功能展示滑動器
+      let currentFeatureSlide = 0;
+      const featureCards = document.querySelectorAll('.feature-card');
+      const totalFeatureCards = featureCards.length;
+      let featureCardsPerView = 3;
+
+      // 根據螢幕尺寸調整顯示卡片數量
+      function updateFeatureCardsPerView() {
+        if (window.innerWidth <= 768) {
+          featureCardsPerView = 1;
+        } else if (window.innerWidth <= 1024) {
+          featureCardsPerView = 2;
+        } else {
+          featureCardsPerView = 3;
+        }
+      }
+
+      // 計算最大滑動頁數
+      function getMaxFeatureSlides() {
+        return Math.ceil(totalFeatureCards / featureCardsPerView) - 1;
+      }
+
+      // 滑動功能
+      function slideFeatures(direction) {
+        const maxSlides = getMaxFeatureSlides();
+        
+        if (direction === 1 && currentFeatureSlide < maxSlides) {
+          currentFeatureSlide++;
+        } else if (direction === -1 && currentFeatureSlide > 0) {
+          currentFeatureSlide--;
+        }
+        
+        updateFeatureSlider();
+      }
+
+      // 更新滑動器位置
+      function updateFeatureSlider() {
+        const container = document.getElementById('featuresContainer');
+        const cardWidth = container.querySelector('.feature-card').offsetWidth;
+        const gap = 30;
+        const translateX = -(currentFeatureSlide * featureCardsPerView * (cardWidth + gap));
+        
+        container.style.transform = `translateX(${translateX}px)`;
+        
+        // 更新導航按鈕狀態
+        const prevBtn = document.getElementById('featuresPrevBtn');
+        const nextBtn = document.getElementById('featuresNextBtn');
+        const maxSlides = getMaxFeatureSlides();
+        
+        prevBtn.disabled = currentFeatureSlide === 0;
+        nextBtn.disabled = currentFeatureSlide >= maxSlides;
+        
+        // 更新指示點
+        updateFeatureDots();
+      }
+
+      // 創建指示點
+      function createFeatureDots() {
+        const dotsContainer = document.getElementById('featuresDots');
+        const maxSlides = getMaxFeatureSlides() + 1;
+        
+        dotsContainer.innerHTML = '';
+        
+        for (let i = 0; i < maxSlides; i++) {
+          const dot = document.createElement('div');
+          dot.className = 'dot';
+          if (i === currentFeatureSlide) dot.classList.add('active');
+          dot.addEventListener('click', () => {
+            currentFeatureSlide = i;
+            updateFeatureSlider();
+          });
+          dotsContainer.appendChild(dot);
+        }
+      }
+
+      // 更新指示點
+      function updateFeatureDots() {
+        const dots = document.querySelectorAll('#featuresDots .dot');
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === currentFeatureSlide);
+        });
+      }
+
+      // 自動播放功能展示
+      let featureAutoSlideInterval;
+      
+      function startFeatureAutoSlide() {
+        featureAutoSlideInterval = setInterval(() => {
+          const maxSlides = getMaxFeatureSlides();
+          if (currentFeatureSlide >= maxSlides) {
+            currentFeatureSlide = 0;
+          } else {
+            currentFeatureSlide++;
+          }
+          updateFeatureSlider();
+        }, 5000);
+      }
+
+      function stopFeatureAutoSlide() {
+        clearInterval(featureAutoSlideInterval);
+      }
+
+      // 初始化功能展示滑動器
+      function initFeaturesSlider() {
+        updateFeatureCardsPerView();
+        createFeatureDots();
+        updateFeatureSlider();
+        startFeatureAutoSlide();
+        
+        // 滑鼠懸停時暫停自動播放
+        const slider = document.querySelector('.features-slider');
+        slider.addEventListener('mouseenter', stopFeatureAutoSlide);
+        slider.addEventListener('mouseleave', startFeatureAutoSlide);
+      }
+
+      // 更新響應式處理
+      window.addEventListener('resize', () => {
+        const oldFeatureCardsPerView = featureCardsPerView;
+        updateFeatureCardsPerView();
+        
+        if (oldFeatureCardsPerView !== featureCardsPerView) {
+          currentFeatureSlide = 0;
+          createFeatureDots();
+          updateFeatureSlider();
+        }
+
+        const oldUseCaseCardsPerView = useCaseCardsPerView;
+        updateUseCaseCardsPerView();
+        
+        if (oldUseCaseCardsPerView !== useCaseCardsPerView) {
+          currentUseCaseSlide = 0;
+          createUseCaseDots();
+          updateUseCaseSlider();
+        }
+        
+        const oldCardsPerView = cardsPerView;
+        updateCardsPerView();
+        
+        if (oldCardsPerView !== cardsPerView) {
+          currentSlide = 0;
+          createDots();
+          updateSlider();
+        }
+      });
+
       // 頁面載入完成後的動畫
       window.addEventListener("load", function () {
         initTestimonialsSlider();
+        initUseCasesSlider();
+        initFeaturesSlider();
       });
     </script>
   </body>
