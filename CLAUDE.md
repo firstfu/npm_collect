@@ -6,14 +6,38 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 這是一個 Chrome 擴充功能，讓用戶可以在 npmjs.com 網站上收藏 npm 套件，並提供管理、搜尋、標籤分類、筆記和匯出功能。使用 Manifest V3 架構。
 
+## 開發指令
+
+### 安裝與測試
+```bash
+# 在 Chrome 中載入擴充功能進行測試
+# 1. 開啟 chrome://extensions/
+# 2. 開啟「開發人員模式」
+# 3. 點擊「載入未封裝項目」，選擇此專案資料夾
+
+# 重新載入擴充功能 (修改代碼後)
+# 在 chrome://extensions/ 頁面點擊擴充功能的重新載入按鈕
+```
+
+### 圖示生成
+```bash
+# 生成所有尺寸的圖示檔案
+# 開啟 icons/generate_pngs.html 在瀏覽器中
+# 點擊「生成所有圖示」按鈕，然後右鍵儲存每個圖示
+
+# 或者使用 Python 腳本 (如果可用)
+python icons/create_icons.py
+```
+
 ## 核心架構
 
 ### Chrome Extension 元件
 - **manifest.json** - 擴充功能配置，定義權限、背景服務、內容腳本等
 - **background.js** - Service Worker，處理存儲操作和跨元件通訊
-- **content.js** - 注入 npm 網站的腳本，負責添加收藏按鈕
-- **popup.js/popup.html** - 彈出視窗，顯示收藏清單和管理功能
-- **options.js/options.html** - 設定頁面，處理匯入/匯出和偏好設定
+- **content.js + content.css** - 注入 npm 網站的腳本和樣式，負責添加收藏按鈕
+- **popup.js/popup.html/popup.css** - 彈出視窗，顯示收藏清單和管理功能
+- **options.js/options.html/options.css** - 設定頁面，處理匯入/匯出和偏好設定
+- **icons/** - 包含各種尺寸的擴充功能圖示和生成工具
 
 ### 資料結構
 套件資料格式：
@@ -49,6 +73,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - 使用 Chrome Storage Local API 儲存所有資料
 - 避免重複收藏同一套件（以名稱為唯一鍵）
 - 支援資料匯入/匯出 (JSON 和 Markdown 格式)
+
+## 調試與開發技巧
+
+### Chrome 開發者工具
+- **Extension DevTools**: 在 `chrome://extensions/` 中點擊「檢查視圖」來調試 popup 和 options 頁面
+- **Background Script**: 使用 `chrome://extensions/` 中的「檢查背景頁面」來調試 Service Worker
+- **Content Script**: 在 npm 網站上按 F12，在 Console 中可以看到 content script 的 log
+
+### 常見調試場景
+- **Storage 檢查**: 在 DevTools 的 Application > Storage > Extension storage 中檢視存儲的資料
+- **消息傳遞**: 在 background.js 和 content.js 中使用 `console.log` 追蹤消息流
+- **DOM 注入**: 檢查 npm 網站的 DOM 結構變化，確保按鈕正確注入
 
 ## 開發注意事項
 
