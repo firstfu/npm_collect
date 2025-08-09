@@ -108,6 +108,10 @@
         font-weight: 600;
         transition: var(--transition);
         box-shadow: 0 5px 15px rgba(203, 56, 55, 0.3);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
       }
 
       .install-btn:hover {
@@ -756,8 +760,39 @@
 
       /* 響應式設計 */
       @media (max-width: 768px) {
+        .nav-container {
+          padding: 15px 20px;
+        }
+
         .nav-links {
           display: none;
+        }
+
+        .logo {
+          font-size: 20px;
+        }
+
+        .logo-icon {
+          width: 35px;
+          height: 35px;
+          font-size: 18px;
+          margin-right: 8px;
+        }
+
+        .install-btn {
+          padding: 8px 16px;
+          font-size: 14px;
+          border-radius: 20px;
+          white-space: nowrap;
+          max-width: 120px;
+          overflow: hidden;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .hero {
+          padding: 120px 20px 80px;
         }
 
         .hero-container {
@@ -798,6 +833,33 @@
       }
 
       @media (max-width: 480px) {
+        .nav-container {
+          padding: 12px 15px;
+        }
+
+        .logo {
+          font-size: 18px;
+        }
+
+        .logo-icon {
+          width: 30px;
+          height: 30px;
+          font-size: 16px;
+          margin-right: 6px;
+        }
+
+        .install-btn {
+          padding: 6px 12px;
+          font-size: 12px;
+          border-radius: 16px;
+          max-width: 100px;
+          overflow: hidden;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+        }
+
         .stats-container {
           grid-template-columns: 1fr;
           gap: 15px;
@@ -855,7 +917,7 @@
           <a href="#features">功能</a>
           <a href="#testimonials">評價</a>
           <a href="#faq">FAQ</a>
-          <a href="#" class="install-btn">立即安裝</a>
+          <a href="#" class="install-btn">免費安裝</a>
         </div>
       </div>
     </nav>
